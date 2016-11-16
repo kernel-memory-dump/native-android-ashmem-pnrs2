@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Ashmem</string>
+    <string name="txtImagePathHint">No image selected</string>
+    <string name="btnSelectImage">Select image</string>
 </resources>

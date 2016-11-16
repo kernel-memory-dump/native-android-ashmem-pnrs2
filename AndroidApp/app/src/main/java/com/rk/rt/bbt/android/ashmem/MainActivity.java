@@ -64,11 +64,6 @@ public class MainActivity extends AppCompatActivity implements AshmemTask.Ashmem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Example of a call to a native method
-        TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
-
-
         appContext = getApplicationContext();
 
         // register native callback
@@ -133,6 +128,13 @@ public class MainActivity extends AppCompatActivity implements AshmemTask.Ashmem
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+
+    /**
+     *
+     * @param mf
+     * @param imagePath
+     */
+    public native void loadImageViaJNI(MemoryFile mf, String imagePath);
 
 
     public static Context getAppContext() {

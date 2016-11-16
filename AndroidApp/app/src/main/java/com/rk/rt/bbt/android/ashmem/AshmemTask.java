@@ -34,7 +34,7 @@ import android.support.annotation.NonNull;
 import java.io.IOException;
 
 /**
- *  Allocates Ashmem regions with given size. Should be executed within a separate Thread.
+ *  Allocates Ashmem regions with given size as a {@link MemoryFile}. Should be executed within a separate Thread.
  *  Performs callback to UiThread, after allocation is complete.
  *  Each ashmem region shall be named as specified by {@link #ASHMEM_REGION_NAME_TEMPLATE} where timestamp is replaced by currentSystem time in
  *  milliseconds.

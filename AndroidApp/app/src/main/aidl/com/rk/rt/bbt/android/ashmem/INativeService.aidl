@@ -10,7 +10,8 @@
  *      copies of this license document, and changing it is allowed as long
  *      as the name is changed.
  *
- *         DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE, TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ *         DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE,
+ *         TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  *
  *         0. You just DO WHAT THE FUCK YOU WANT TO
  *
@@ -24,19 +25,15 @@
  *
  ****************************************************************************/
 
-// INativeCallback.aidl
+// INativeService.aidl
 package com.rk.rt.bbt.android.ashmem;
 
+// Declare any non-default types here with import statements
 
-/**
- * Callback from native service via Binder, targeting the MainActivity
- */
-interface INativeCallback {
-
+interface INativeService {
     /**
-     * Notification from NativeService that the image was loaded into the specified Ashmem region
+     * Demonstrates some basic types that you can use as parameters
+     * and return values in AIDL.
      */
-    void imageLoadedAsync(boolean success);
-
-
+    void loadImage();
 }

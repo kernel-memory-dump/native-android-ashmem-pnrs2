@@ -10,8 +10,10 @@ LOCAL_SHARED_LIBRARIES += libcutils
 LOCAL_SHARED_LIBRARIES += libbinder
 
 LOCAL_SRC_FILES += IExample.cpp
+LOCAL_SRC_FILES += INativeCallback.cpp
 LOCAL_SRC_FILES += BnExample.cpp
 LOCAL_SRC_FILES += BpExample.cpp
+
 
 include $(BUILD_SHARED_LIBRARY)
 

@@ -1,3 +1,6 @@
+#ifndef BP_EXAMPLE_H
+#define BP_EXAMPLE_H
+
 #include "IExample.h"
 #include "INativeCallback.h"
 
@@ -18,3 +21,5 @@ public:
 };
 
 }
+
+#endif

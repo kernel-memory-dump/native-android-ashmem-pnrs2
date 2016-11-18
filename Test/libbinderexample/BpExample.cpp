@@ -1,4 +1,5 @@
 #define LOG_NDEBUG 0
+
 #define LOG_TAG "BpExample"
 
 #include <cutils/log.h>
@@ -85,7 +86,11 @@ void BpExample::registerCallback(sp<INativeCallback> callback)
         Parcel data, reply;
         ALOGV("%s enter", __FUNCTION__);
 
-        data.writeInterfaceToken(INativeCallback::getInterfaceDescriptor());
+        data.writeInterfaceToken(IExample::getInterfaceDescriptor());
+
+
+
+        
         data.writeStrongBinder(INativeCallback::asBinder(callback));
         
         remote()->transact(REGISTER_CALLBACK, data, &reply);

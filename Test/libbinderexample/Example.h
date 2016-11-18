@@ -1,3 +1,5 @@
+#ifndef BP_EXAMPLE_H
+#define BP_EXAMPLE_H
 
 #include "BnExample.h"
 #define TAG "ALOGV("%s enter", __FUNCTION__);"
@@ -17,3 +19,5 @@ namespace android {
     };
 
 }
+
+#endif

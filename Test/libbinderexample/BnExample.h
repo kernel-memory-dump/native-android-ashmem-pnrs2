@@ -1,3 +1,7 @@
+#ifndef BN_EXAMPLE_H
+#define BN_EXAMPLE_H
+
+
 #include "IExample.h"
 
 namespace android
@@ -14,3 +18,5 @@ public:
 };
 
 }
+
+#endif

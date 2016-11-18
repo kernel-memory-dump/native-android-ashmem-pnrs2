@@ -79,7 +79,15 @@ JNIEXPORT jstring JNICALL Java_com_rk_rt_bbt_android_ashmem_MainActivity_stringF
 JNIEXPORT void JNICALL Java_com_rk_rt_bbt_android_ashmem_MainActivity_loadImageViaJNI(JNIEnv *env, jobject instance, jobject mf, jstring imagePath_) {
     const char *imagePath = env->GetStringUTFChars(imagePath_, 0);
 
+    // use native BinderClient in order to relay message to NativeService
+    // the native service will in-turn trigger a callback to MainActivity via INativeCallback 
 
+    /*
+    sp <IServiceManager> smanager =defaultServiceManager();
+    sp<IBinder> binder = smanager -> getService(String16("com.rt.rk.bbt.android.ashmem.NativeService")); 
+    sp <INativeService> example = interface_cast <INativeService> (binder);
+    int testValue =example ->getExample(); 
+    */
     env->ReleaseStringUTFChars(imagePath_, imagePath);
 }
 

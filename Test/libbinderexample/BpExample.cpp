@@ -85,9 +85,9 @@ void BpExample::registerCallback(sp<INativeCallback> callback)
         Parcel data, reply;
         ALOGV("%s enter", __FUNCTION__);
 
-        data.writeInterfaceToken(IExample::getInterfaceDescriptor());
-        data.writeStrongBinder(callback);
-
+        data.writeInterfaceToken(INativeCallback::getInterfaceDescriptor());
+        data.writeStrongBinder(INativeCallback::asBinder(callback));
+        
         remote()->transact(REGISTER_CALLBACK, data, &reply);
         reply.readInt32();
 

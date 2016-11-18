@@ -1,17 +1,15 @@
 
-#include "BnExample.h"
+#include "BnNativeServiceServer.h"
 #define TAG "ALOGV("%s enter", __FUNCTION__);"
 
 namespace android {
 
-    class Example: public BnExample {
+    class NativeService: public BnNativeServiceServer {
     private:
         int32_t myField;
         sp<INativeCallback> callback;
     public:
-        Example();
-        int32_t getExample ();
-        int32_t setExample (int32_t t);
+        NativeService();
         void registerCallback(sp<INativeCallback> callback);
         
     };

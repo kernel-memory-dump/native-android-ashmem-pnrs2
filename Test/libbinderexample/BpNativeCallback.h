@@ -10,7 +10,7 @@ class BpNativeCallback : public BpInterface<INativeCallback>
 public:
     BpNativeCallback(const sp<IBinder>& impl);
 
-    virtual onImageLoaded(bool success);
+    virtual void onImageLoaded(bool success);
 
 };
 

@@ -4,11 +4,11 @@
 #include <cutils/log.h>
 #include <binder/Parcel.h>
 
-#include "BnExample.h"
+#include "BnNativeServiceServer.h"
 
 using namespace android;
 
-status_t BnExample::onTransact(uint32_t code, const Parcel& data,
+status_t BnNativeServiceServer::onTransact(uint32_t code, const Parcel& data,
         Parcel* reply, uint32_t flags __attribute__((unused)))
 {
     ALOGV("%s enter: code = %d", __FUNCTION__, code);

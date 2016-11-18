@@ -4,18 +4,18 @@ using namespace android;
 #include <cutils/log.h>
 #include <binder/Parcel.h>
 
-Example::Example()
+NativeService::NativeService()
 {
 
 }
 
-int32_t Example::getExample() 
+int32_t NativeService::getExample() 
 {
 
     return this->myField;
 }
 
-int32_t Example::setExample(int32_t t) 
+int32_t NativeService::setExample(int32_t t) 
 {
     this->myField = t;
     return this->myField+1;
@@ -32,7 +32,7 @@ static void* triggerCallback(void *context)
        return NULL;
 }
 
-void Example::registerCallback(sp<INativeCallback> callback) 
+void NativeService::registerCallback(sp<INativeCallback> callback) 
 {
     pthread_t pt;
     pthread_create( &pt, NULL, triggerCallback, (void*)&callback );

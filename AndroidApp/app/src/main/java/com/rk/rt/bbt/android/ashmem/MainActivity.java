@@ -28,16 +28,30 @@
 package com.rk.rt.bbt.android.ashmem;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.IBinder;
 import android.os.MemoryFile;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rk.rt.bbt.android.ashmem.util.ServiceManagerFetcher;
 
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.ViewById;
+
+import java.io.FileDescriptor;
 import java.util.jar.JarFile;
 
 /**
@@ -45,15 +59,20 @@ import java.util.jar.JarFile;
  *
  * Access to Application's Context is provided with {@link }
  */
-public class MainActivity extends AppCompatActivity implements AshmemTask.AshmemTaskCallback{
+@EActivity(R.layout.activity_main)
+public class MainActivity extends AppCompatActivity implements AshmemTask.AshmemTaskCallback {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final int REGION_SIZE = 1024;
     // Native service will register itself to the ServiceManager under this name
     private static final String NATIVE_SERVICE_NAME = "com.rt.rk.bbt.android.ashmem.NativeService";
+    public static final int REQUEST_CODE = 1337;
 
 
     private static Context appContext;
+
+    @ViewById
+    EditText txtImagePath;
 
 
 
@@ -99,6 +118,10 @@ public class MainActivity extends AppCompatActivity implements AshmemTask.Ashmem
      */
     private void renderImage() {
         Log.d(TAG, "[imageLoadedAsync][enter]");
+
+        //FileDescriptor fd = extractFDFromMemoryFile();
+      //  Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+
     }
 
 
@@ -127,6 +150,11 @@ public class MainActivity extends AppCompatActivity implements AshmemTask.Ashmem
 
         // obtain a reference to the NativeService via ServiceManager
         IBinder nativeServiceBinder = ServiceManagerFetcher.getIBinderViaServiceManager(NATIVE_SERVICE_NAME);
+        if(nativeServiceBinder == null) {
+            Log.e(TAG, "Failed to contact Native Service!");
+            Toast.makeText(getAppContext(), "Failed to acquire bind native service", Toast.LENGTH_LONG).show();
+            return;
+        }
         //INativeService example = INativeService.Stub.asInterface(nativeServiceBinder);
         IExample example = IExample.Stub.asInterface(nativeServiceBinder);
         try {
@@ -158,5 +186,49 @@ public class MainActivity extends AppCompatActivity implements AshmemTask.Ashmem
         return appContext;
     }
 
+    @Click({R.id.btnSelectImage})
+    void onImageSelectClicked() {
+        //Intent intent = new Intent();
+        //intent.setType("image/*");
+        //intent.setAction(Intent.ACTION_GET_CONTENT);
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/* video/*");
+        startActivityForResult(pickIntent, REQUEST_CODE);
+    }
 
+    @Click({R.id.btnLoadImage})
+    void onLoadImageClicked() {
+
+    }
+
+
+    @OnActivityResult(REQUEST_CODE)
+    void onResult(Intent data) {
+        if(data == null || data.getData() == null) {
+            // image loading failed
+            Log.e(TAG, "OnActivityResult triggered, failed to acquire image URL");
+            return;
+        }
+
+        Uri uri = data.getData();
+        Log.v(TAG, "Acquired image path! URI is:" + uri.getPath());
+        txtImagePath.setText(uri.getPath());
+    }
+
+
+
+/*
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.btnSelectImage:
+                onImageSelectClicked();
+                break;
+            case R.id.btnLoadImage:
+                onLoadImageClicked();
+                break;
+            default:
+                break;
+        }
+    }*/
 }

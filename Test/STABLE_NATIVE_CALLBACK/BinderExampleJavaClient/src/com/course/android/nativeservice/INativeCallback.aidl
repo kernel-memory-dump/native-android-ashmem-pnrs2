@@ -37,7 +37,7 @@ interface INativeCallback {
     /**
      * Notification from NativeService that the image was loaded into the specified Ashmem region
      */
-    void imageLoadedAsync(boolean success);
+    void imageLoadedAsync(int success);
 
 
 }

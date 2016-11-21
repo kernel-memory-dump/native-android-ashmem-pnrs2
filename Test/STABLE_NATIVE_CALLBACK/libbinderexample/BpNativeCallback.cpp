@@ -15,13 +15,13 @@ BpNativeCallback::BpNativeCallback(const sp<IBinder>& impl) :
 
 }
 
-void BpNativeCallback::imageLoadedAsync(bool success)
+void BpNativeCallback::imageLoadedAsync(int result)
 {
         Parcel data, reply;
         ALOGV("%s enter", __FUNCTION__);
 
         data.writeInterfaceToken(INativeCallback::getInterfaceDescriptor());
-        data.writeInt32(success);
+        data.writeInt32(result);
 
         remote()->transact(IMAGE_LOADED, data, &reply);
         reply.readInt32();

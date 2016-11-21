@@ -15,7 +15,7 @@ public:
         IMAGE_LOADED = IBinder::FIRST_CALL_TRANSACTION
     };
 
-    virtual void imageLoadedAsync(bool success) = 0;
+    virtual void imageLoadedAsync(int result) = 0;
 
     // name of interface -> poziv BP
     DECLARE_META_INTERFACE(NativeCallback);

@@ -68,10 +68,10 @@ public class MainActivity extends Activity {
 
        callback = new INativeCallback.Stub() {
             @Override
-            public void imageLoadedAsync(boolean success) throws RemoteException {
+            public void imageLoadedAsync(final int result) throws RemoteException {
                 MainActivity.this.runOnUiThread(new Runnable() {
                         public void run() {
-                        Toast.makeText(MainActivity.this, "Callback from native service!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Callback from native service!:" + result, Toast.LENGTH_LONG).show();
                         Log.d(TAG, "[callbackFunction][enter]");
                         Log.d(TAG, "[callbackFunction][exit]");    
                         

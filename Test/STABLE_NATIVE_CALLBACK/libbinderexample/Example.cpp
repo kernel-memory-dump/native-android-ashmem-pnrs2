@@ -6,7 +6,7 @@ using namespace android;
 #include <binder/Parcel.h>
 #include <pthread.h>
 
-static sp<INativeCallback> _callback;
+
 
 Example::Example()
 {
@@ -25,16 +25,23 @@ int32_t Example::setExample(int32_t t)
     return this->myField+1;
 }
 
+void Example::triggerCallback(int result)
+{
+    __callback->imageLoadedAsync(result);
+}
 
 
-void* triggerCallback(void *context)
+
+void* imageLoadingWorker(void *context)
 {
     ALOGV("%s enter  POSIX THREAD ", __FUNCTION__);
+    Example* example = (Example*) context;
+    int i = 0;
     while(true)
      {
-      ALOGV("Triggering callback to Java!");
-       _callback->imageLoadedAsync(true);
-       sleep(5);
+        ALOGV("Triggering callback to Java!");
+        example->triggerCallback((++i) % 10);
+        sleep(5);
      }
 
        return NULL;
@@ -43,9 +50,9 @@ void* triggerCallback(void *context)
 void Example::registerCallback(sp<INativeCallback> callback) 
 {
     ALOGV("%s enter", __FUNCTION__);
-    _callback = callback;
+    __callback = callback;
     pthread_t pt;
-    pthread_create( &pt, NULL, triggerCallback, NULL);
+    pthread_create( &pt, NULL, imageLoadingWorker, (void*)this);
     pthread_detach(pt);
 }
 

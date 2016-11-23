@@ -24,33 +24,55 @@
  ****************************************************************************/
 
 #define LOG_NDEBUG 0
-#define LOG_TAG "BpNativeCallback"
+#define LOG_TAG "BpNativeService"
 
 #include <cutils/log.h>
 #include <binder/Parcel.h>
 
-#include "BpNativeCallback.h"
+#include "BpNativeService.h"
 
 using namespace android;
 
 
-BpNativeCallback::BpNativeCallback(const sp<IBinder>& impl) :
-	BpInterface<INativeCallback>(impl)
+BpNativeService::BpNativeService(const sp<IBinder>& impl) :
+	BpInterface<INativeService>(impl)
 {
 
 }
 
-void BpNativeCallback::imageLoadedAsync(int result)
+void BpNativeService::registerCallback(sp<INativeCallback> callback)
 {
         Parcel data, reply;
         ALOGV("%s enter", __FUNCTION__);
 
-        data.writeInterfaceToken(INativeCallback::getInterfaceDescriptor());
-        data.writeInt32(result);
+        data.writeInterfaceToken(INativeService::getInterfaceDescriptor());
         
-        remote()->transact(IMAGE_LOADED, data, &reply);
+        data.writeStrongBinder(INativeCallback::asBinder(callback));
+        
+        remote()->transact(REGISTER_CALLBACK, data, &reply);
         reply.readInt32();
 
         ALOGV("%s exit", __FUNCTION__);
 
 }
+
+void BpNativeService::loadImageAsync(int32_t fd, const char* imgPath)
+{
+        Parcel data, reply;
+        ALOGV("%s enter", __FUNCTION__);
+        ALOGV("fd is: %x , imgPath: %s", fd, imgPath);
+
+        
+        data.writeInterfaceToken(INativeService::getInterfaceDescriptor());
+        data.writeFileDescriptor(fd);
+        data.writeCString(imgPath);
+
+        remote()->transact(LOAD_IMAGE_ASYNC, data, &reply);
+        ALOGV("%s exit", __FUNCTION__);
+
+}
+
+
+
+
+

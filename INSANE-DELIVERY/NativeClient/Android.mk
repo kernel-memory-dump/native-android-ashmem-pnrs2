@@ -12,7 +12,7 @@ LOCAL_SHARED_LIBRARIES += libbinder
 
 LOCAL_C_INCLUDES += ../NativeCommon/
 LOCAL_SRC_FILES += BpNativeCallback.cpp
-LOCAL_SRC_FILES += BpExample.cpp
+LOCAL_SRC_FILES += BpNativeService.cpp
 
 include $(BUILD_SHARED_LIBRARY)
 

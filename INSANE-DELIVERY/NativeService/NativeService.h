@@ -22,35 +22,23 @@
  *
  *
  ****************************************************************************/
+ 
+#include "BnNativeService.h"
 
-#define LOG_NDEBUG 0
-#define LOG_TAG "BpNativeCallback"
+namespace android {
 
-#include <cutils/log.h>
-#include <binder/Parcel.h>
-
-#include "BpNativeCallback.h"
-
-using namespace android;
-
-
-BpNativeCallback::BpNativeCallback(const sp<IBinder>& impl) :
-	BpInterface<INativeCallback>(impl)
-{
-
-}
-
-void BpNativeCallback::imageLoadedAsync(int result)
-{
-        Parcel data, reply;
-        ALOGV("%s enter", __FUNCTION__);
-
-        data.writeInterfaceToken(INativeCallback::getInterfaceDescriptor());
-        data.writeInt32(result);
-        
-        remote()->transact(IMAGE_LOADED, data, &reply);
-        reply.readInt32();
-
-        ALOGV("%s exit", __FUNCTION__);
+    /**
+     * Implementation of INativeService, invoked through Stub, BnNativeService
+     */
+class NativeService: public BnNativeService {
+    private:
+        int32_t myField;
+        sp<INativeCallback> __callback;
+    public:
+        NativeService();
+        void registerCallback(sp<INativeCallback>);
+        void loadImageAsync(int32_t);
+        void triggerCallback(int);
+    };
 
 }

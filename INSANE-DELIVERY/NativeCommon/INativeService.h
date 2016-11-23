@@ -23,8 +23,8 @@
  *
  ****************************************************************************/
 
-#ifndef ANDROID_IEXAMPLE_H
-#define ANDROID_IEXAMPLE_H
+#ifndef ANDROID_INATIVE_SERVICE_H
+#define ANDROID_INATIVE_SERVICE_H
 
 #include <binder/IInterface.h>
 #include "INativeCallback.h"
@@ -32,22 +32,40 @@
 namespace android
 {
 
-class IExample : public IInterface
+/**
+ * Meta interface for image loading NativeService
+ */
+class INativeService : public IInterface
 {
 public:
 
     enum 
     {
-        REGISTER_CALLBACK = IBinder::FIRST_CALL_TRANSACTION,   // poziv prvog da bi se startovalo enumiranje
+        REGISTER_CALLBACK = IBinder::FIRST_CALL_TRANSACTION, 
         LOAD_IMAGE_ASYNC
         
     };
 
-    virtual int32_t getExample() = 0;
-    virtual int32_t setExample(int32_t t) = 0;
-    virtual void registerCallback(sp<INativeCallback> callback) = 0;
+    enum StatusCodesEnum
+    { 
+        IMAGE_LOADED_OK=0, 
+        NOT_ENOUGH_MEMORY, 
+        IMAGE_NOT_FOUND,
+        OTHER_ERROR
+    };
 
-    DECLARE_META_INTERFACE(Example);
+    /**
+     *  Clients that use the loadImageAsync should previously register themselves
+     */
+    virtual void registerCallback(sp<INativeCallback>) = 0;
+
+    /**
+     *  Attempts to load specified image into specified ashmem region.
+     *  This is performed in a separate thread, INativeCallback is triggered upon completion
+     */
+    virtual void loadImageAsync(int32_t, const char*) = 0;
+
+    DECLARE_META_INTERFACE(NativeService);
 };
 
 }

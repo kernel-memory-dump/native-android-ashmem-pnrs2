@@ -28,14 +28,16 @@
 namespace android 
 {
 
-
+/**
+ *  Client-Side Proxy for INativeCallback
+ */
 class BpNativeCallback : public BpInterface<INativeCallback>
 {
 
 public:
     BpNativeCallback(const sp<IBinder>& impl);
 
-    virtual void imageLoadedAsync(int result);
+    virtual void imageLoadedAsync(int);
 
 };
 

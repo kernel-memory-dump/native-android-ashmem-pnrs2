@@ -23,34 +23,19 @@
  *
  ****************************************************************************/
 
-#define LOG_NDEBUG 0
-#define LOG_TAG "BpNativeCallback"
+#include "IExample.h"
 
-#include <cutils/log.h>
-#include <binder/Parcel.h>
-
-#include "BpNativeCallback.h"
-
-using namespace android;
-
-
-BpNativeCallback::BpNativeCallback(const sp<IBinder>& impl) :
-	BpInterface<INativeCallback>(impl)
+namespace android
 {
 
-}
-
-void BpNativeCallback::imageLoadedAsync(int result)
+class BnExample : public BnInterface<IExample>
 {
-        Parcel data, reply;
-        ALOGV("%s enter", __FUNCTION__);
 
-        data.writeInterfaceToken(INativeCallback::getInterfaceDescriptor());
-        data.writeInt32(result);
-        
-        remote()->transact(IMAGE_LOADED, data, &reply);
-        reply.readInt32();
+public:
 
-        ALOGV("%s exit", __FUNCTION__);
+    virtual status_t onTransact(uint32_t code, const Parcel& data,
+            Parcel* reply, uint32_t flags = 0);
+
+};
 
 }

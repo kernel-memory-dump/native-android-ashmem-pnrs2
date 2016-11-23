@@ -23,10 +23,10 @@
  *
  ****************************************************************************/
 
-#include "IExample.h"
-#include "BpExample.h"
+#include "INativeService.h"
+#include "BpNativeService.h"
 
 using namespace android;
 
-IMPLEMENT_META_INTERFACE(Example, "aidl.novak.sebastian.info.ashmem.jni.IExample");
+IMPLEMENT_META_INTERFACE(NativeService, "aidl.novak.sebastian.info.ashmem.jni.IExample");
 

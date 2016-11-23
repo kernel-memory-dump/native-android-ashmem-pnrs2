@@ -30,11 +30,20 @@ package aidl.novak.sebastian.info.ashmem.jni;
 
 import aidl.novak.sebastian.info.ashmem.jni.INativeCallback;
 
-// Declare any non-default types here with import statements
-
+/**
+ * Native image loading service
+ */
 interface INativeService {
-
+	
+	/**
+	 * @param callback - in order to get notified when image loading is complete
+	 * clients should previously use this method to register a callback.
+	 */
     void registerCallback(INativeCallback callback);
-    //void loadImage();
+    /**
+     * Attempts to read the specified image located at absFilePath, into specified 
+     * ashmem region.
+     */
+    void loadImageAsync(in ParcelFileDescriptor pfd, String absFilePath);
 
 }

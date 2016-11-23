@@ -1,3 +1,5 @@
+##########################################
+
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
@@ -13,3 +15,5 @@ LOCAL_SRC_FILES += IExample.cpp
 LOCAL_SRC_FILES += INativeCallback.cpp
 
 include $(BUILD_SHARED_LIBRARY)
+##########################################
+

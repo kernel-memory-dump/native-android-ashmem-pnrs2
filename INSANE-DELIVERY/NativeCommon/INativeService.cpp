@@ -22,25 +22,11 @@
  *
  *
  ****************************************************************************/
- 
-#include "BnExample.h"
 
-namespace android {
+#include "IExample.h"
+#include "BpExample.h"
 
-    /**
-     *
-     */
-    class Example: public BnExample {
-    private:
-        int32_t myField;
-        sp<INativeCallback> __callback;
-    public:
-        Example();
-        int32_t getExample ();
-        int32_t setExample (int32_t t);
-        void registerCallback(sp<INativeCallback> callback);
-        //void loadImage();
-        void triggerCallback(int result);
-    };
+using namespace android;
 
-}
+IMPLEMENT_META_INTERFACE(Example, "aidl.novak.sebastian.info.ashmem.jni.IExample");
+

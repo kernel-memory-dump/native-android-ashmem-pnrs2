@@ -22,25 +22,34 @@
  *
  *
  ****************************************************************************/
- 
-#include "BnExample.h"
 
-namespace android {
+#ifndef ANDROID_IEXAMPLE_H
+#define ANDROID_IEXAMPLE_H
 
-    /**
-     *
-     */
-    class Example: public BnExample {
-    private:
-        int32_t myField;
-        sp<INativeCallback> __callback;
-    public:
-        Example();
-        int32_t getExample ();
-        int32_t setExample (int32_t t);
-        void registerCallback(sp<INativeCallback> callback);
-        //void loadImage();
-        void triggerCallback(int result);
+#include <binder/IInterface.h>
+#include "INativeCallback.h"
+
+namespace android
+{
+
+class IExample : public IInterface
+{
+public:
+
+    enum 
+    {
+        REGISTER_CALLBACK = IBinder::FIRST_CALL_TRANSACTION,   // poziv prvog da bi se startovalo enumiranje
+        LOAD_IMAGE_ASYNC
+        
     };
 
+    virtual int32_t getExample() = 0;
+    virtual int32_t setExample(int32_t t) = 0;
+    virtual void registerCallback(sp<INativeCallback> callback) = 0;
+
+    DECLARE_META_INTERFACE(Example);
+};
+
 }
+
+#endif

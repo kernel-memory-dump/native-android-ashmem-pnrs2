@@ -33,7 +33,7 @@ package aidl.novak.sebastian.info.ashmem.jni;
 interface INativeCallback {
 
         /**
-         * Notification from NativeService that the image was loaded into the specified Ashmem region
+         * Notification from NativeService that the image was loaded into the specified Ashmem r* egion
          * Result can be converted into an enum StatusCodes
          */
         void imageLoadedAsync(int result);

@@ -1,0 +1,37 @@
+.
+├── AshmemApp
+│   ├── res
+│   │   ├── layout
+│   │   ├── menu
+│   │   ├── mipmap-hdpi
+│   │   ├── mipmap-mdpi
+│   │   ├── mipmap-xhdpi
+│   │   ├── mipmap-xxhdpi
+│   │   ├── mipmap-xxxhdpi
+│   │   ├── values
+│   │   ├── values-v21
+│   │   └── values-w820dp
+│   └── src
+│       ├── aidl
+│       │   └── novak
+│       │       └── sebastian
+│       │           └── info
+│       │               └── ashmem
+│       │                   └── jni
+│       └── java
+│           └── novak
+│               └── sebastian
+│                   └── info
+│                       └── ashmem
+│                           ├── jni
+│                           ├── presenter
+│                           ├── util
+│                           └── view
+├── JNI
+└── Native
+    ├── NativeClient
+    ├── NativeCommon
+    ├── NativeService
+    └── NativeTest
+
+34 directories

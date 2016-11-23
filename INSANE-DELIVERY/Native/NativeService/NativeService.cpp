@@ -23,7 +23,7 @@
  *
  ****************************************************************************/
 
-#include "Example.h"
+#include "NativeService.h"
 #define LOG NATIVE_SERVIS
 
 using namespace android;
@@ -31,29 +31,35 @@ using namespace android;
 #include <binder/Parcel.h>
 #include <pthread.h>
 
+typedef struct ThreadArgs_t {
+	int32_t fd;
+	const char* imgPath;
+	NativeService* serviceHandle;
+} ThreadArgs;
+
 void* imageLoadingWorker(void *context);
 int openAshmem(int* fd);
 int inline getImgSize(FILE* imageFp);
 
 
-Example::Example()
+NativeService::NativeService()
 {
 
 }
 
-int32_t Example::getExample() 
+int32_t NativeService::getNativeService() 
 {
 
     return this->myField;
 }
 
-int32_t Example::setExample(int32_t t) 
+int32_t NativeService::setNativeService(int32_t t) 
 {
     this->myField = t;
     return this->myField+1;
 }
 
-void Example::triggerCallback(int result)
+void NativeService::triggerCallback(int result)
 {
     __callback->imageLoadedAsync(result);
 }
@@ -73,37 +79,38 @@ int inline getImgSize(FILE* imageFp)
 void* imageLoadingWorker(void* context)
 {
     ALOGV("%s enter  POSIX THREAD ", __FUNCTION__);
-    Example* example = (Example*) context;
+    ThreadArgs* args = (ThreadArgs*) context;
+    NativeService* serviceHandle = args->serviceHandle;
     int i = 0;
-	int32_t* fd = (int32_t*)arg;
+	int32_t* fd = (int32_t*)args->fd;
     uint8_t* fashm = create_ashmem(fd);
 
     if (fashm == MAP_FAILED) 
 	{
         ALOGE("mmap failed! %d, %s", errno, strerror(errno));
-        example->triggerCallback(result);
+        serviceHandle->triggerCallback(INativeService::IMAGE_LOADED_OK);
         return NULL;    
     }
 
     FILE *fpImg;
-    fpImg = fopen(file_name, "rb");
+    fpImg = fopen(args->imgPath, "rb");
 	// assert that we managed to open the image file
     if(fpImg == NULL) 
 	{
-		example->triggerCallback(result);
+		serviceHandle->triggerCallback(INativeService::IMAGE_NOT_FOUND);
 		return NULL;
 	}
 	// get image size
 	uint32_t imgSize = getFileSize(fpImg);
 	if(imgSize == -1) {
-		example->triggerCallback(result);
+		serviceHandle->triggerCallback(INativeService::IMAGE_NOT_FOUND);
 		return NULL;
 	}
 	
 	// assert that the image can be loaded into ashmem region
 	if(ashmemSize < (imgSize)) 
 	{
-		example->triggerCallback(result);
+		serviceHandle->triggerCallback(INativeService::NOT_ENOUGH_MEMORY);
 		return NULL;
 	}
 	
@@ -116,23 +123,32 @@ void* imageLoadingWorker(void* context)
 	numBytes = fread(fashm + 4, 1, imgSize, fpImg);
 	// asert that the image was successfully loaded into ashmem region
 	if(numBytes != imgSize) {
-		example->triggerCallback(result);
+		serviceHandle->triggerCallback(OTHER_ERROR);
 		return NULL;
 	}
 	
 	fclose(fp);
 	
-	example->triggerCallback(result);
+	serviceHandle->triggerCallback(INativeService::IMAGE_LOADED_OK);
 
     return NULL;
 }
 /////////////////////////////////////////////////////////////////////////////////////
-void Example::registerCallback(sp<INativeCallback> callback) 
+void NativeService::registerCallback(sp<INativeCallback> callback) 
 {
     ALOGV("%s enter", __FUNCTION__);
     __callback = callback;
-    pthread_t pt;
-    pthread_create( &pt, NULL, imageLoadingWorker, (void*)this);
+}
+
+void NativeService::loadImageAsync(int32_t, const char*)
+{
+
+	ThreadArgs args;
+	args.fd = fd;
+	args.imgPath = imgPath;
+	args.serviceHandle = this;
+	pthread_t pt;
+    pthread_create( &pt, NULL, imageLoadingWorker, (void*)&args);
     pthread_detach(pt);
 }
 

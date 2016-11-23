@@ -33,15 +33,17 @@
 #include <binder/IPCThreadState.h>
 #include <binder/ProcessState.h>
 
-#include "IExample.h"
+#include "<INativeService.h>"
 
 using namespace android;
 
 int main() {
-    sp <IServiceManager> smanager =defaultServiceManager();
-    sp<IBinder> binder = smanager -> getService(String16("Example")); 
-   sp <IExample> example = interface_cast <IExample> (binder);
-    int testValue =example ->getExample(); 
-  ALOGI("Test value: %d", testValue);
+   /* sp <IServiceManager> smanager =defaultServiceManager();
+    sp<IBinder> binder = smanager -> getService(String16("AshmemNativeService")); 
+   	sp <INativeService> example = interface_cast <INativeService> (binder);
+    
+*/
+
+  	ALOGI("Test value: %d", 1337);
 
  }

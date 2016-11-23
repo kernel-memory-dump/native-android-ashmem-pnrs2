@@ -5,19 +5,22 @@
 
 #include <binder/IServiceManager.h>
 #include <binder/IPCThreadState.h>
-#include <NativeCallback.h>
-
+#include <INativeService.h>
+#include <INativeCallback.h>
 #include "native_client.h"
 
 
 #define TAG JNI_WRAPPER
+#define NATIVE_SERVICE_NAME "AshmemNativeService"
+
+using namespace android;
 
 JNIEXPORT int JNICALL Java_novak_sebastian_info_ashmem_jni_JNIWrapper_loadImageViaJNI(JNIEnv* env, jobject thizz,  jobject jMemoryFile, jstring jImgPath) {
     ALOGV("%s enter:", __FUNCTION__);
     // Extract FileDescriptor to allocated region
     jclass clsMF = env->FindClass("android/os/MemoryFile");
     jfieldID fldFD = env->GetFieldID(clsMF, "mFD", "Ljava/io/FileDescriptor;");
-    jobject objFD = env->GetObjectField(jmf, fldFD);
+    jobject objFD = env->GetObjectField(jMemoryFile, fldFD);
 
     jclass clsFD = env->FindClass("java/io/FileDescriptor");
     fldFD = env->GetFieldID(clsFD, "descriptor", "I");
@@ -30,13 +33,13 @@ JNIEXPORT int JNICALL Java_novak_sebastian_info_ashmem_jni_JNIWrapper_loadImageV
     static sp<INativeService> nativeService = 0;
 
     sp<IServiceManager> sm = defaultServiceManager();
-    sp<IBinder>	binder = sm->getService(String16(serviseName));
+    sp<IBinder>	binder = sm->getService(String16(NATIVE_SERVICE_NAME));
     if(binder == NULL) {
         return -1;
     }
 
     nativeService = INativeService::asInterface(binder);
-    nativeService->loadImageAsync(vr_file_desc,  imgPathCString);
+    nativeService->loadImageAsync(fdAllocatedRegion,  imgPathCString);
 
 
     // clean up

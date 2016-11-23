@@ -38,6 +38,7 @@ import java.util.concurrent.Executors;
 import novak.sebastian.info.ashmem.util.CommonUtils;
 import novak.sebastian.info.ashmem.util.ServiceManagerFetcher;
 import aidl.novak.sebastian.info.ashmem.jni.INativeCallback;
+import aidl.novak.sebastian.info.ashmem.jni.INativeService;
 
 /**
  *
@@ -47,8 +48,13 @@ public class JNIWrapper {
     private static final String NATIVE_SERVICE_NAME = "AshmemNativeService";
     private static final String TAG = JNIWrapper.class.getName();
 
-
+    /**
+     * Client interface 
+     */
     public interface JNIWrapperCallback {
+        /**
+         * Invoked if an Exception occured while using Binder IPC
+         */
         void onError();
         void onImageLoaded(StatusCodes status);
 
@@ -61,9 +67,9 @@ public class JNIWrapper {
         this.callbackClient = callbackClient;
     }
 
-    // Used to load the 'native-lib' library on application startup.
+    // Used to load the JNI Service client library on application startup.
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("native_client");
     }
 
 
@@ -89,8 +95,7 @@ public class JNIWrapper {
             }
         };
 
-        /*
-        INativeService example = INativeService.Stub.asInterface(nativeServiceBinder);
+        
         INativeService serviceHandle = INativeService.Stub.asInterface(nativeServiceBinder);
         try {
             serviceHandle.registerCallback(nativeCallback);
@@ -98,7 +103,7 @@ public class JNIWrapper {
         } catch (RemoteException e) {
             e.printStackTrace();
             callbackClient.onError();
-        }*/
+        }
     }
     
     /**

@@ -31,6 +31,7 @@
 
 #include "BpNativeService.h"
 
+
 using namespace android;
 
 
@@ -46,8 +47,7 @@ void BpNativeService::registerCallback(sp<INativeCallback> callback)
         ALOGV("%s enter", __FUNCTION__);
 
         data.writeInterfaceToken(INativeService::getInterfaceDescriptor());
-        
-        data.writeStrongBinder(INativeCallback::asBinder(callback));
+        data.writeStrongBinder(callback->asBinder());
         
         remote()->transact(REGISTER_CALLBACK, data, &reply);
         reply.readInt32();

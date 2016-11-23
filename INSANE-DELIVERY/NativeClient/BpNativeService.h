@@ -26,7 +26,8 @@
 #ifndef BP_NATIVE_SERVICE
 #define BP_NATIVE_SERVICE
 
-#include "INativeService.h"
+#include <INativeService.h>
+
 
 namespace android
 {

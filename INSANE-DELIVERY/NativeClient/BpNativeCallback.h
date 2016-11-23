@@ -23,6 +23,8 @@
  *
  ****************************************************************************/
 
+#ifndef ANDROID_BPNATIVE_CALLBACK_H
+#define ANDROID_BPNATIVE_CALLBACK_H
 #include <INativeCallback.h>
 
 namespace android 
@@ -42,3 +44,5 @@ public:
 };
 
 }
+
+#endif

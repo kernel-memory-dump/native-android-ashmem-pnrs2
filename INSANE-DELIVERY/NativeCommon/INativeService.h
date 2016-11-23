@@ -43,10 +43,9 @@ public:
     {
         REGISTER_CALLBACK = IBinder::FIRST_CALL_TRANSACTION, 
         LOAD_IMAGE_ASYNC
-        
     };
 
-    // INativeService::IMAGE_LOADED_OK
+    
     enum StatusCodesEnum
     { 
         IMAGE_LOADED_OK=0, 

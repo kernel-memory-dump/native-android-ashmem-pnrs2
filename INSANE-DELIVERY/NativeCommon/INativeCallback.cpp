@@ -24,7 +24,7 @@
  ****************************************************************************/
 
 #include "INativeCallback.h"
-#include "BpNativeCallback.h"
+#include <BpNativeCallback.h>
 
 using namespace android;
  

@@ -31,6 +31,12 @@ using namespace android;
 #include <binder/Parcel.h>
 #include <pthread.h>
 
+typedef struct ThreadArgs_t {
+	int32_t fd;
+	const char* imgPath;
+	NativeService* serviceHandle;
+} ThreadArgs;
+
 void* imageLoadingWorker(void *context);
 int openAshmem(int* fd);
 int inline getImgSize(FILE* imageFp);
@@ -73,9 +79,10 @@ int inline getImgSize(FILE* imageFp)
 void* imageLoadingWorker(void* context)
 {
     ALOGV("%s enter  POSIX THREAD ", __FUNCTION__);
-    NativeService* serviceHandle = (NativeService*) context;
+    ThreadArgs* args = (ThreadArgs*) context;
+    NativeService* serviceHandle = args->serviceHandle;
     int i = 0;
-	int32_t* fd = (int32_t*)arg;
+	int32_t* fd = (int32_t*)args->fd;
     uint8_t* fashm = create_ashmem(fd);
 
     if (fashm == MAP_FAILED) 
@@ -86,7 +93,7 @@ void* imageLoadingWorker(void* context)
     }
 
     FILE *fpImg;
-    fpImg = fopen(file_name, "rb");
+    fpImg = fopen(args->imgPath, "rb");
 	// assert that we managed to open the image file
     if(fpImg == NULL) 
 	{
@@ -131,8 +138,17 @@ void NativeService::registerCallback(sp<INativeCallback> callback)
 {
     ALOGV("%s enter", __FUNCTION__);
     __callback = callback;
-    pthread_t pt;
-    pthread_create( &pt, NULL, imageLoadingWorker, (void*)this);
+}
+
+void NativeService::loadImageAsync(int32_t, const char*)
+{
+
+	ThreadArgs args;
+	args.fd = fd;
+	args.imgPath = imgPath;
+	args.serviceHandle = this;
+	pthread_t pt;
+    pthread_create( &pt, NULL, imageLoadingWorker, (void*)&args);
     pthread_detach(pt);
 }
 

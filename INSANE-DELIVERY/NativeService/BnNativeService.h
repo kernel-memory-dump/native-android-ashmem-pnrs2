@@ -23,12 +23,12 @@
  *
  ****************************************************************************/
 
-#include "IExample.h"
+#include <INativeService.h>
 
 namespace android
 {
 
-class BnExample : public BnInterface<IExample>
+class BnNativeService : public BnInterface<INativeService>
 {
 
 public:

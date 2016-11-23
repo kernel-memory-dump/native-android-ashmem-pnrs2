@@ -37,7 +37,7 @@ class NativeService: public BnNativeService {
     public:
         NativeService();
         void registerCallback(sp<INativeCallback>);
-        void loadImageAsync(int32_t);
+        void loadImageAsync(int32_t, const char*);
         void triggerCallback(int);
     };
 

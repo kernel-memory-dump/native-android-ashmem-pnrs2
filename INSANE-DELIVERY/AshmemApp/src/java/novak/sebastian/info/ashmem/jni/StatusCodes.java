@@ -35,7 +35,7 @@ public enum StatusCodes {
     IMAGE_LOADED_OK(0), // image was loaded successfully
     NOT_ENOUGH_MEMORY(1), // ashmem region was not large enough to store the image in
     IMAGE_NOT_FOUND(2),  // if requested image could be accessed/found
-    OTHER_ERROR(3)
+    OTHER_ERROR(3);
 
     private final int value;
 

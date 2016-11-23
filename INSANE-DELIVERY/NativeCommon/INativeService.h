@@ -46,6 +46,7 @@ public:
         
     };
 
+    // INativeService::IMAGE_LOADED_OK
     enum StatusCodesEnum
     { 
         IMAGE_LOADED_OK=0, 

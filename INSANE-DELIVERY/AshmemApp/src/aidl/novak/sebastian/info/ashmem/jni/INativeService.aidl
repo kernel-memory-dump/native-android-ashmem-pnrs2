@@ -28,6 +28,7 @@
 // INativeService.aidl
 package aidl.novak.sebastian.info.ashmem.jni;
 
+import android.os.ParcelFileDescriptor;
 import aidl.novak.sebastian.info.ashmem.jni.INativeCallback;
 
 /**

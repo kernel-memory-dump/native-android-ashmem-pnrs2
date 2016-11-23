@@ -81,7 +81,7 @@ void* imageLoadingWorker(void* context)
     if (fashm == MAP_FAILED) 
 	{
         ALOGE("mmap failed! %d, %s", errno, strerror(errno));
-        serviceHandle->triggerCallback(result);
+        serviceHandle->triggerCallback(INativeService::IMAGE_LOADED_OK);
         return NULL;    
     }
 
@@ -90,20 +90,20 @@ void* imageLoadingWorker(void* context)
 	// assert that we managed to open the image file
     if(fpImg == NULL) 
 	{
-		serviceHandle->triggerCallback(result);
+		serviceHandle->triggerCallback(INativeService::IMAGE_NOT_FOUND);
 		return NULL;
 	}
 	// get image size
 	uint32_t imgSize = getFileSize(fpImg);
 	if(imgSize == -1) {
-		serviceHandle->triggerCallback(result);
+		serviceHandle->triggerCallback(INativeService::IMAGE_NOT_FOUND);
 		return NULL;
 	}
 	
 	// assert that the image can be loaded into ashmem region
 	if(ashmemSize < (imgSize)) 
 	{
-		serviceHandle->triggerCallback(result);
+		serviceHandle->triggerCallback(INativeService::NOT_ENOUGH_MEMORY);
 		return NULL;
 	}
 	
@@ -116,18 +116,18 @@ void* imageLoadingWorker(void* context)
 	numBytes = fread(fashm + 4, 1, imgSize, fpImg);
 	// asert that the image was successfully loaded into ashmem region
 	if(numBytes != imgSize) {
-		serviceHandle->triggerCallback(result);
+		serviceHandle->triggerCallback(OTHER_ERROR);
 		return NULL;
 	}
 	
 	fclose(fp);
 	
-	serviceHandle->triggerCallback(result);
+	serviceHandle->triggerCallback(INativeService::IMAGE_LOADED_OK);
 
     return NULL;
 }
 /////////////////////////////////////////////////////////////////////////////////////
-void Example::registerCallback(sp<INativeCallback> callback) 
+void NativeService::registerCallback(sp<INativeCallback> callback) 
 {
     ALOGV("%s enter", __FUNCTION__);
     __callback = callback;

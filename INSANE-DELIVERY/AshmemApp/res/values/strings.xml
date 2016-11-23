@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ashmem</string>
+    <string name="txtImagePathHint">No image selected</string>
+    <string name="btnSelectImage">Select image</string>
+    <string name="btnLoadImage">Load image </string>
+</resources>

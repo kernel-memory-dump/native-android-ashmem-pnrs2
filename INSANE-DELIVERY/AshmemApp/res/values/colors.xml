@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="colorPrimary" type="color" >#3F51B5</item>
+    <item name="colorPrimaryDark"  type="color">#303F9F</item>
+    <item name="colorAccent"  type="color">#448AFF</item> 
+    <item name="primary_light"  type="color">#C5CAE9</item> 
+    <item name="accent"  type="color">#448AFF</item> 
+ <!-- 
+    <color name="colorPrimary"  type="color">#3F51B5</color>
+    <color name="colorPrimaryDark"  type="color">#303F9F</color>
+    <color name="colorAccent">#448AFF</color> 
+    <color name="primary">#3F51B5</color>
+    
+    <color name="primary_light">#</color>
+    <color name="accent">#448AFF</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+    -->
+</resources>

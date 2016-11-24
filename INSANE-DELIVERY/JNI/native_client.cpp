@@ -39,6 +39,7 @@ JNIEXPORT int JNICALL Java_novak_sebastian_info_ashmem_jni_JNIWrapper_loadImageV
     }
 
     nativeService = INativeService::asInterface(binder);
+    ALOGV("Sending file descriptor %x", fdAllocatedRegion);
     nativeService->loadImageAsync(fdAllocatedRegion,  imgPathCString);
 
     // clean up

@@ -100,8 +100,10 @@ public class JNIWrapper {
         try {
             Log.d(TAG, "[SERVICE HANDLE?] is null?" + (serviceHandle == null));
             serviceHandle.registerCallback(nativeCallback);
-           
+            
             int errorCode = loadImageViaJNI(mf, path);
+            
+
             if (errorCode != 0) {
                 callbackClient.onError();
                 return;

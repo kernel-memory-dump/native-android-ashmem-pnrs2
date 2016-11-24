@@ -41,10 +41,6 @@ interface INativeService {
 	 * clients should previously use this method to register a callback.
 	 */
     void registerCallback(INativeCallback callback);
-    /**
-     * Attempts to read the specified image located at absFilePath, into specified 
-     * ashmem region.
-     */
-    void loadImageAsync(in ParcelFileDescriptor pfd, String absFilePath);
 
+    
 }

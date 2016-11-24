@@ -66,7 +66,7 @@ public class MainPresenterImpl implements MainPresenter, JNIWrapperCallback {
     public void onUIReady() {
         Log.v(TAG, "UI ready! Locking down buttons!");
         // lock UI, user can't select an image before an memory region is allocated
-        //view.setUIEnabled(false);
+        view.setUIEnabled(false);
 
         // initialize JNIWrapper
         jniWrapper = new JNIWrapper(this);
@@ -83,7 +83,7 @@ public class MainPresenterImpl implements MainPresenter, JNIWrapperCallback {
                 memoryRegion = mf;
                 // executing on UI thread, unlock UI
                 // user can now select image, memory is ready
-                //view.setUIEnabled(true);
+                view.setUIEnabled(true);
             }
          }, REGION_SIZE);
 
@@ -123,9 +123,11 @@ public class MainPresenterImpl implements MainPresenter, JNIWrapperCallback {
 
     @Override
     public void onLoadImage() {
-        //String imgPath = view.getPath();
+        String imgPath = view.getPath();
         //int success = jniWrapper.loadImageViaJNI();
-        jniWrapper.initiateImageLoadNative(memoryRegion, "/data/data/bbt2.jpg");
+        //jniWrapper.initiateImageLoadNative(memoryRegion, "/data/data/bbt2.jpg");
+        jniWrapper.initiateImageLoadNative(memoryRegion, imgPath);
+        
 
     }
 

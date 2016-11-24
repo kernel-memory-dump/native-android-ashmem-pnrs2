@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := nativeServiceImgLoad2
+LOCAL_MODULE := nativeServiceImgLoad5
 
 
 LOCAL_SHARED_LIBRARIES += libutils

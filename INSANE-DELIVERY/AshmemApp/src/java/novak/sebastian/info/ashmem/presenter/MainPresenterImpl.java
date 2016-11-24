@@ -137,9 +137,28 @@ public class MainPresenterImpl implements MainPresenter, JNIWrapperCallback {
     public void onImageLoaded(StatusCodes status) {
         Log.v(TAG, "onImageLoaded -> JNI wrapper received callback from Native:" + status);
 
+        if(status == StatusCodes.NOT_ENOUGH_MEMORY) {
+            view.showToast("Not enough memory to load image! Image too large!");
+            return;
+        }
+
+        if(status == StatusCodes.IMAGE_NOT_FOUND) {
+            view.showToast("Image not found!");
+            return;
+        }
+
+        if(status == StatusCodes.OTHER_ERROR || status == null) {
+            view.showToast("Failed to read image content!");
+            return;
+        }
+
         Bitmap bitmap = jniWrapper.convertToBitmap(memoryRegion);
-        mf.close(); 
-        view.setImage(bmp);
+        if(bitmap == null) {
+            view.showToast("Failed to read image content!");
+            return;
+        }
+        memoryRegion.close(); 
+        view.setImage(bitmap);
         
 
     }

@@ -123,7 +123,7 @@ public class MainActivity extends Activity implements MainView {
 
     @Override
     public void setImage(Bitmap image) {
-        imgView.setImage(image);
+        imageView2.setImageBitmap(image);
     }
 
 

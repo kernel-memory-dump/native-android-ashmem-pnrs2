@@ -114,7 +114,11 @@ void* imageLoadingWorker(void* context)
 	uint32_t numBytes = 0;
 	
 	// write image size in first 4 bytes
-	memcpy(fashm, &imgSize, 4);
+	//memcpy(fashm, &imgSize, 4);
+	fashm[3] = ((imgSize >> 24) & 0xFF);
+    fashm[2] = ((imgSize >> 16) & 0xFF);
+    fashm[1] = ((imgSize >>  8) & 0xFF);
+    fashm[0] = ((imgSize      ) & 0xFF);
 	
 	// load image into ashmem region
 	numBytes = fread(fashm + 4, 1, imgSize, fpImg);

@@ -41,7 +41,6 @@ JNIEXPORT int JNICALL Java_novak_sebastian_info_ashmem_jni_JNIWrapper_loadImageV
     nativeService = INativeService::asInterface(binder);
     nativeService->loadImageAsync(fdAllocatedRegion,  imgPathCString);
 
-
     // clean up
     env->DeleteLocalRef(clsFD);
     env->DeleteLocalRef(objFD);

@@ -1,4 +1,4 @@
-#define LOG_TAG "NativeServiceServer"
+#define LOG_TAG "NativeServiceServer_DAEMON"
 
 #include <cutils/log.h>
 #include <utils/CallStack.h>

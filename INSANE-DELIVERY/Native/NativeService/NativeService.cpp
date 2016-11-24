@@ -33,7 +33,7 @@
 using namespace android;
 
 #define MEMORY_SIZE 10*1024 
-#define LOG NATIVE_SERVIS
+#define LOG_TAG "NativeServiceAshmem"
 
 
 typedef struct ThreadArgs_t {
@@ -72,10 +72,16 @@ int getImgSize(FILE* imageFp)
 void* imageLoadingWorker(void* context)
 {
     ALOGV("%s enter  POSIX THREAD ", __FUNCTION__);
-    ThreadArgs* args = (ThreadArgs*) context;
-    NativeService* serviceHandle = args->serviceHandle;
+    // copy into local
+    ThreadArgs* argsPtr = (ThreadArgs*) context;
+    ThreadArgs args = *argsPtr;
+    // release argsPtr
+    free(argsPtr);
+
+
+    NativeService* serviceHandle = args.serviceHandle;
     int i = 0;
-	int32_t* fd = (int32_t*)args->fd;
+	int32_t* fd = (int32_t*)args.fd;
     uint8_t* fashm = (uint8_t*) mmap(NULL, MEMORY_SIZE, PROT_WRITE | PROT_READ, MAP_SHARED, *fd, 0);
 
     if (fashm == MAP_FAILED) 
@@ -86,7 +92,7 @@ void* imageLoadingWorker(void* context)
     }
 
     FILE *fpImg;
-    fpImg = fopen(args->imgPath, "rb");
+    fpImg = fopen(args.imgPath, "rb");
 	// assert that we managed to open the image file
     if(fpImg == NULL) 
 	{
@@ -135,13 +141,22 @@ void NativeService::registerCallback(sp<INativeCallback> callback)
 
 void NativeService::loadImageAsync(int32_t fd, const char* imgPath)
 {
+	ALOGV("%s enter", __FUNCTION__);
+	
+	ThreadArgs* args = (ThreadArgs*) malloc(sizeof(ThreadArgs));
+	if(args == NULL) 
+	{
+		ALOGE("loadImageAsync: FATAL ERROR, MALLOC FAILED");
+		triggerCallback(INativeService::OTHER_ERROR);
+		return;
+	}
 
-	ThreadArgs args;
-	args.fd = fd;
-	args.imgPath = imgPath;
-	args.serviceHandle = this;
+	args->fd = fd;
+	args->imgPath = imgPath;
+	args->serviceHandle = this;
+	/*
 	pthread_t pt;
-    pthread_create( &pt, NULL, imageLoadingWorker, (void*)&args);
-    pthread_detach(pt);
+    pthread_create( &pt, NULL, imageLoadingWorker, (void*)args);
+    pthread_detach(pt); */
 }
 

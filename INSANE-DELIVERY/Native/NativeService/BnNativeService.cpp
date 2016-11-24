@@ -60,8 +60,8 @@ status_t BnNativeService::onTransact(uint32_t code, const Parcel& data,
             ALOGV("%s enter: code LOAD_IMAGE_ASYNC", __FUNCTION__);
             // call underlying implementation
             int32_t fd = data.readFileDescriptor();
-            char *imgPath;
-            imgPath = (char *) data.readCString();
+            const char *imgPath;
+            imgPath = (const char *) data.readCString();
             ALOGV("fd is: %x , imgPath: %s", fd, imgPath);
             loadImageAsync(fd, imgPath);
             // client will be notified via callback 

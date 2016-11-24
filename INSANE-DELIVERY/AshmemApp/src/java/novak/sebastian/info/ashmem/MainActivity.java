@@ -37,6 +37,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ImageView;
+import android.graphics.Bitmap;
 
 import novak.sebastian.info.ashmem.presenter.MainPresenter;
 import novak.sebastian.info.ashmem.presenter.MainPresenterImpl;
@@ -51,6 +53,7 @@ public class MainActivity extends Activity implements MainView {
     private EditText txtImagePath;
     private Button btnLoadImage;
     private Button btnSelectImage;
+    private ImageView imageView2;
 
 
     @Override
@@ -69,6 +72,7 @@ public class MainActivity extends Activity implements MainView {
         txtImagePath = (EditText) findViewById(R.id.txtImagePath);
         btnLoadImage = (Button) findViewById(R.id.btnLoadImage);
         btnSelectImage = (Button) findViewById(R.id.btnSelectImage);
+        imageView2 = (ImageView) findViewById(R.id.imageView2);
 
         Button.OnClickListener btnLoadImageClickListener = new Button.OnClickListener() {
             public void onClick(View v) {
@@ -118,8 +122,8 @@ public class MainActivity extends Activity implements MainView {
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        presenter.onImageSelected(requestCode, resultCode, data);
+    public void setImage(Bitmap image) {
+        imgView.setImage(image);
     }
 
 

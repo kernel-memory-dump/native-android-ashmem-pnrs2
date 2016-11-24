@@ -40,6 +40,9 @@ import novak.sebastian.info.ashmem.util.ServiceManagerFetcher;
 import aidl.novak.sebastian.info.ashmem.jni.INativeCallback;
 import aidl.novak.sebastian.info.ashmem.jni.INativeService;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 /**
  *
  */
@@ -73,7 +76,20 @@ public class JNIWrapper {
     }
 
 
+    public Bitmap convertToBitmap(MemoryFile mf) {
 
+        byte[] sizeBytes = new byte[4];
+        // first first 4 bytes account for image size
+        mf.readBytes(sizeBytes, 0, 0, 4);
+        // convert to int
+        int size = ByteBuffer.wrap(sizeBytes).getInt();
+
+        byte[] pictureBytes = new byte[size];
+        // after image size, actual payload follows
+        mf.readBytes(pictureBytes, 4, 0, size);
+        Bitmap bmp = BitmapFactory.decodeByteArray(pictureBytes, 0, size);
+
+    }
     
     public void initiateImageLoadNative(MemoryFile mf, String path) {
 

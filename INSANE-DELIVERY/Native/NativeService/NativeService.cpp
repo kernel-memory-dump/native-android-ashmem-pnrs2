@@ -32,7 +32,7 @@
 
 using namespace android;
 
-#define MEMORY_SIZE 10*1024 
+#define MEMORY_SIZE 2*1024*1024
 #define LOG_TAG "NativeServiceAshmem"
 
 

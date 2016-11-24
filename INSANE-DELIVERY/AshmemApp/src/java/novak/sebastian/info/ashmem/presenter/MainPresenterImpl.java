@@ -39,6 +39,8 @@ import novak.sebastian.info.ashmem.jni.JNIWrapper.JNIWrapperCallback;
 import novak.sebastian.info.ashmem.util.AppState;
 
 import novak.sebastian.info.ashmem.view.MainView;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 /**
  * Implements App Logic for MainView
@@ -47,7 +49,7 @@ public class MainPresenterImpl implements MainPresenter, JNIWrapperCallback {
 
     private static final String TAG = MainPresenterImpl.class.getSimpleName();
     private static final int REQUEST_CODE = 1337;
-    public static final int REGION_SIZE = 10*1024; //10 kB
+    public static final int REGION_SIZE = 2*1024*1024; //
 
     private MainView view;
     private JNIWrapper jniWrapper;
@@ -134,6 +136,12 @@ public class MainPresenterImpl implements MainPresenter, JNIWrapperCallback {
 
     public void onImageLoaded(StatusCodes status) {
         Log.v(TAG, "onImageLoaded -> JNI wrapper received callback from Native:" + status);
+
+        Bitmap bitmap = jniWrapper.convertToBitmap(memoryRegion);
+        mf.close(); 
+        view.setImage(bmp);
+        
+
     }
 
 

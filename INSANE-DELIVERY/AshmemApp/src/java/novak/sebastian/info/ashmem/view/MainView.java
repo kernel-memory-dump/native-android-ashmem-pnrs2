@@ -29,6 +29,8 @@ package novak.sebastian.info.ashmem.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 /**
  * Abstracts away UI-specifics
@@ -43,6 +45,7 @@ public interface MainView {
     void setImagePath(String path);
 
     void showToast(String text);
+    void setImage(Bitmap image);
 
     Activity asActivity();
 

@@ -27,8 +27,8 @@
 #include <cutils/log.h>
 #include <binder/Parcel.h>
 #include <pthread.h>
-#include <iostream>
-#include <fstream>
+#include <binder/MemoryHeapBase.h>
+
 
 using namespace android;
 
@@ -44,7 +44,7 @@ typedef struct ThreadArgs_t {
 
 void* imageLoadingWorker(void *context);
 int openAshmem(int* fd);
-int inline getImgSize(FILE* imageFp);
+int getImgSize(FILE* imageFp);
 
 
 NativeService::NativeService()
@@ -57,7 +57,7 @@ void NativeService::triggerCallback(int result)
     __callback->imageLoadedAsync(result);
 }
 /////////////////////////////////////////////////////////////////////////////////////
-int inline getImgSize(FILE* imageFp) 
+int getImgSize(FILE* imageFp) 
 {
 	if(imageFp == NULL) {
 		return -1;
@@ -76,7 +76,7 @@ void* imageLoadingWorker(void* context)
     NativeService* serviceHandle = args->serviceHandle;
     int i = 0;
 	int32_t* fd = (int32_t*)args->fd;
-    uint8_t* fashm = (uint8_t*) mmap(NULL, ASHMEM_MEMORY_SIZE, PROT_WRITE | PROT_READ, MAP_SHARED, *fd, 0);
+    uint8_t* fashm = (uint8_t*) mmap(NULL, MEMORY_SIZE, PROT_WRITE | PROT_READ, MAP_SHARED, *fd, 0);
 
     if (fashm == MAP_FAILED) 
 	{
@@ -94,20 +94,20 @@ void* imageLoadingWorker(void* context)
 		return NULL;
 	}
 	// get image size
-	uint32_t imgSize = getFileSize(fpImg);
-	if(imgSize == -1) {
+	uint32_t imgSize = getImgSize(fpImg);
+	if(imgSize == 0) {
 		serviceHandle->triggerCallback(INativeService::IMAGE_NOT_FOUND);
 		return NULL;
 	}
 	
 	// assert that the image can be loaded into ashmem region
-	if(ashmemSize < (imgSize)) 
+	if(MEMORY_SIZE < (imgSize)) 
 	{
 		serviceHandle->triggerCallback(INativeService::NOT_ENOUGH_MEMORY);
 		return NULL;
 	}
 	
-	int numBytes = -1;
+	uint32_t numBytes = 0;
 	
 	// write image size in first 4 bytes
 	memcpy(fashm, &imgSize, 4);
@@ -116,11 +116,11 @@ void* imageLoadingWorker(void* context)
 	numBytes = fread(fashm + 4, 1, imgSize, fpImg);
 	// asert that the image was successfully loaded into ashmem region
 	if(numBytes != imgSize) {
-		serviceHandle->triggerCallback(OTHER_ERROR);
+		serviceHandle->triggerCallback(INativeService::OTHER_ERROR);
 		return NULL;
 	}
 	
-	fclose(fp);
+	fclose(fpImg);
 	
 	serviceHandle->triggerCallback(INativeService::IMAGE_LOADED_OK);
 
@@ -133,7 +133,7 @@ void NativeService::registerCallback(sp<INativeCallback> callback)
     __callback = callback;
 }
 
-void NativeService::loadImageAsync(int32_t, const char*)
+void NativeService::loadImageAsync(int32_t fd, const char* imgPath)
 {
 
 	ThreadArgs args;

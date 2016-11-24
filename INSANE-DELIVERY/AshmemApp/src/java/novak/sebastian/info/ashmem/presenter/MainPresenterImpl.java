@@ -47,7 +47,7 @@ public class MainPresenterImpl implements MainPresenter, JNIWrapperCallback {
 
     private static final String TAG = MainPresenterImpl.class.getSimpleName();
     private static final int REQUEST_CODE = 1337;
-    public static final int REGION_SIZE = 1024;
+    public static final int REGION_SIZE = 10*1024; //10 kB
 
     private MainView view;
     private JNIWrapper jniWrapper;

@@ -15,7 +15,7 @@
 
 using namespace android;
 
-JNIEXPORT int JNICALL Java_novak_sebastian_info_ashmem_jni_JNIWrapper_loadImageViaJNI(JNIEnv* env, jobject thizz,  jobject jMemoryFile, jstring jImgPath) {
+JNIEXPORT int JNICALL Java_novak_sebastian_info_ashmem_jni_JNIWrapper_loadImageViaJNI__Landroid_os_MemoryFile_2Ljava_lang_String_2(JNIEnv* env, jobject ,  jobject jMemoryFile, jstring jImgPath) {
     ALOGV("%s enter:", __FUNCTION__);
     // Extract FileDescriptor to allocated region
     jclass clsMF = env->FindClass("android/os/MemoryFile");

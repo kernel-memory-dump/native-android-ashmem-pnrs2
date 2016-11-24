@@ -24,12 +24,17 @@
  ****************************************************************************/
 
 #include "NativeService.h"
-#define LOG NATIVE_SERVIS
-
-using namespace android;
 #include <cutils/log.h>
 #include <binder/Parcel.h>
 #include <pthread.h>
+#include <iostream>
+#include <fstream>
+
+using namespace android;
+
+#define MEMORY_SIZE 10*1024 
+#define LOG NATIVE_SERVIS
+
 
 typedef struct ThreadArgs_t {
 	int32_t fd;
@@ -45,18 +50,6 @@ int inline getImgSize(FILE* imageFp);
 NativeService::NativeService()
 {
 
-}
-
-int32_t NativeService::getNativeService() 
-{
-
-    return this->myField;
-}
-
-int32_t NativeService::setNativeService(int32_t t) 
-{
-    this->myField = t;
-    return this->myField+1;
 }
 
 void NativeService::triggerCallback(int result)
@@ -83,7 +76,7 @@ void* imageLoadingWorker(void* context)
     NativeService* serviceHandle = args->serviceHandle;
     int i = 0;
 	int32_t* fd = (int32_t*)args->fd;
-    uint8_t* fashm = create_ashmem(fd);
+    uint8_t* fashm = (uint8_t*) mmap(NULL, ASHMEM_MEMORY_SIZE, PROT_WRITE | PROT_READ, MAP_SHARED, *fd, 0);
 
     if (fashm == MAP_FAILED) 
 	{

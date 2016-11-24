@@ -1,0 +1,13 @@
+.
+├── Android.mk
+├── AshmemApp
+│   └── Android.mk
+├── JNI
+│   └── Android.mk
+├── Native
+│   ├── Android.mk
+│   ├── NativeClient
+│   ├── NativeCommon
+│   └── NativeService
+│       └── Android.mk
+

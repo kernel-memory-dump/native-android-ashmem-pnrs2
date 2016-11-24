@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-JNIEXPORT int JNICALL Java_novak_sebastian_info_JNIWrapper_loadImageViaJNI(JNIEnv *, jobject,  jobject, jstring, jstring);
+JNIEXPORT int JNICALL Java_novak_sebastian_info_ashmem_jni_JNIWrapper_loadImageViaJNI__Landroid_os_MemoryFile_2Ljava_lang_String_2(JNIEnv *, jobject,  jobject, jstring);
 
 #ifdef __cplusplus
 }

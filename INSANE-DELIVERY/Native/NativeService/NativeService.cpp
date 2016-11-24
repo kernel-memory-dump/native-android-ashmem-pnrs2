@@ -150,13 +150,13 @@ void NativeService::loadImageAsync(int32_t fd, const char* imgPath)
 		triggerCallback(INativeService::OTHER_ERROR);
 		return;
 	}
-
+	triggerCallback(INativeService::OTHER_ERROR);
 	args->fd = fd;
 	args->imgPath = imgPath;
 	args->serviceHandle = this;
-	/*
+	
 	pthread_t pt;
     pthread_create( &pt, NULL, imageLoadingWorker, (void*)args);
-    pthread_detach(pt); */
+    pthread_detach(pt); 
 }
 

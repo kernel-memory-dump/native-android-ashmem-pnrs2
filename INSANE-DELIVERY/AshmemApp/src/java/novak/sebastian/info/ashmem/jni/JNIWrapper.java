@@ -60,7 +60,7 @@ public class JNIWrapper {
 
     }
 
-    private MemoryFile mf;
+    //private MemoryFile mf;
     private JNIWrapperCallback callbackClient;
 
     public JNIWrapper(JNIWrapperCallback callbackClient) {
@@ -75,7 +75,7 @@ public class JNIWrapper {
 
 
     
-    public void initiateImageLoadNative(String path) {
+    public void initiateImageLoadNative(MemoryFile mf, String path) {
 
         // obtain a reference to the NativeService via ServiceManager
         IBinder nativeServiceBinder = ServiceManagerFetcher.getIBinderViaServiceManager(NATIVE_SERVICE_NAME);
@@ -99,7 +99,12 @@ public class JNIWrapper {
         INativeService serviceHandle = INativeService.Stub.asInterface(nativeServiceBinder);
         try {
             serviceHandle.registerCallback(nativeCallback);
-            loadImageViaJNI(mf, path);
+            int errorCode = loadImageViaJNI(mf, path);
+            if (errorCode != 0) {
+                callbackClient.onError();
+                return;
+            }
+
         } catch (RemoteException e) {
             e.printStackTrace();
             callbackClient.onError();

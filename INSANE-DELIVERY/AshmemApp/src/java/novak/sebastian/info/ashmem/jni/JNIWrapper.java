@@ -98,14 +98,18 @@ public class JNIWrapper {
         
         INativeService serviceHandle = INativeService.Stub.asInterface(nativeServiceBinder);
         try {
+            Log.d(TAG, "[SERVICE HANDLE?] is null?" + (serviceHandle == null));
             serviceHandle.registerCallback(nativeCallback);
+           
             int errorCode = loadImageViaJNI(mf, path);
             if (errorCode != 0) {
                 callbackClient.onError();
                 return;
-            }
+            } 
 
         } catch (RemoteException e) {
+
+            Log.e(TAG, "[SERVICE HANDLE?] " + e.getMessage());
             e.printStackTrace();
             callbackClient.onError();
         }

@@ -75,19 +75,17 @@ void* imageLoadingWorker(void* context)
     // copy into local
     ThreadArgs* argsPtr = (ThreadArgs*) context;
     ThreadArgs args = *argsPtr;
-    // release argsPtr
-    free(argsPtr);
+
 
 
     NativeService* serviceHandle = args.serviceHandle;
     int i = 0;
-	int32_t* fd = (int32_t*)args.fd;
-    uint8_t* fashm = (uint8_t*) mmap(NULL, MEMORY_SIZE, PROT_WRITE | PROT_READ, MAP_SHARED, *fd, 0);
+    uint8_t* fashm = (uint8_t*) mmap(NULL, MEMORY_SIZE, PROT_WRITE, MAP_SHARED, args.fd, 0);
 
     if (fashm == MAP_FAILED) 
 	{
-        ALOGE("mmap failed! %d, %s", errno, strerror(errno));
-        serviceHandle->triggerCallback(INativeService::IMAGE_LOADED_OK);
+        ALOGE("mmap failed!");
+        serviceHandle->triggerCallback(INativeService::OTHER_ERROR);
         return NULL;    
     }
 
@@ -137,6 +135,7 @@ void NativeService::registerCallback(sp<INativeCallback> callback)
 {
     ALOGV("%s enter", __FUNCTION__);
     __callback = callback;
+    triggerCallback(INativeService::OTHER_ERROR);
 }
 
 void NativeService::loadImageAsync(int32_t fd, const char* imgPath)

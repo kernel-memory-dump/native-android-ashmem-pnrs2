@@ -123,7 +123,7 @@ public class MainPresenterImpl implements MainPresenter, JNIWrapperCallback {
     public void onLoadImage() {
         //String imgPath = view.getPath();
         //int success = jniWrapper.loadImageViaJNI();
-        jniWrapper.initiateImageLoadNative(memoryRegion, "/data/data/bbt.jpg");
+        jniWrapper.initiateImageLoadNative(memoryRegion, "/data/data/bbt2.jpg");
 
     }
 
